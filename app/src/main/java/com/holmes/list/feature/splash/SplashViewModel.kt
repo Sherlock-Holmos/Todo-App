@@ -1,23 +1,21 @@
 package com.holmes.list.feature.splash
 
 import android.os.CountDownTimer
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
  * 启动页面VM
  */
-class SplashViewModel :ViewModel(){
-    private var timer: CountDownTimer?=null
+class SplashViewModel : ViewModel() {
+    private var timer: CountDownTimer? = null
 
     /**
      * 倒计时秒数
      */
     private val _timeLeft = MutableStateFlow(0L)
-    val timeLeft:StateFlow<Long> = _timeLeft
+    val timeLeft: StateFlow<Long> = _timeLeft
 
     /**
      * 是否跳转到主界面
@@ -28,13 +26,13 @@ class SplashViewModel :ViewModel(){
         delayToNext()
     }
 
-    private fun delayToNext(time:Long=1) {
-        timer = object: CountDownTimer(time,1000){
+    private fun delayToNext(time: Long = 3000) {
+        timer = object : CountDownTimer(time, 1000) {
             /**
              * 每次倒数计时执行
              */
             override fun onTick(millisUntilFinished: Long) {
-                _timeLeft.value = millisUntilFinished/1000 + 1
+                _timeLeft.value = millisUntilFinished / 1000 + 1
             }
 
             /**

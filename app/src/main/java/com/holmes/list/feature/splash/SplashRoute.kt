@@ -34,9 +34,7 @@ fun SplashRoute(
     val navigateToMain by viewModel.navigateToMain.collectAsState()
 
     SplashScreen(
-        year = SuperDateUtil.CurrentYear(),
-        timeLeft = timeLeft,
-        toMain = toMain
+        year = SuperDateUtil.currentYear(), timeLeft = timeLeft, toMain = toMain
     )
 
     if (navigateToMain) {
@@ -80,6 +78,16 @@ fun SplashScreen(
                 .statusBarsPadding()
                 .padding(120.dp)
                 .align(Alignment.TopCenter)
+                .clickable {
+                    toMain()
+                })
+
+        Text(text = "by\n"+stringResource(id = R.string.author),
+            color = MaterialTheme.colorScheme.background,
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier
+                .statusBarsPadding()
+                .align(Alignment.Center)
                 .clickable {
                     toMain()
                 })
