@@ -42,28 +42,26 @@ fun MainScreen() {
     val scope = rememberCoroutineScope()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         HorizontalPager(
-            state = pagerState,
-            userScrollEnabled = false, //允许用户进行页面滑动
+            state = pagerState, userScrollEnabled = false, //允许用户进行页面滑动
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-        ) {page->
-            when(page){
-                0->ListRoute()
-                1->WeekRoute()
-                2->HabitRoute()
-                3->MineRoute()
+        ) { page ->
+            when (page) {
+                0 -> ListRoute()
+                1 -> WeekRoute()
+                2 -> HabitRoute()
+                3 -> MineRoute()
             }
         }
 
         MyNavigationBar(
             destinations = TopLevelDestination.entries,
             currentDestination = currentDestination,
-            onNavigationToDestination = {index ->
+            onNavigationToDestination = { index ->
                 currentDestination = TopLevelDestination.entries[index].route
                 scope.launch {
                     pagerState.animateScrollToPage(index)

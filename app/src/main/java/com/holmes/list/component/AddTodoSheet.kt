@@ -21,7 +21,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.holmes.list.data.model.TodoItem
 import com.holmes.list.data.viewmodel.TodoViewModel
@@ -33,8 +32,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTodoBottomSheet(
-    showBottomSheet: Boolean, onDismiss: () -> Unit,
-    viewModel: TodoViewModel
+    showBottomSheet: Boolean, onDismiss: () -> Unit, viewModel: TodoViewModel
 ) {
     //待办类信息
     var newTodoTitle by remember { mutableStateOf("") }
@@ -62,13 +60,13 @@ fun AddTodoBottomSheet(
                     )
                     // 待办标题输入框
                     OutlinedTextField(value = newTodoTitle,
-                        onValueChange = {newTodoTitle = it},
+                        onValueChange = { newTodoTitle = it },
                         label = { Text("Title") },
                         modifier = Modifier.fillMaxWidth()
                     )
                     // 待办描述输入框
                     OutlinedTextField(value = newTodoDescription,
-                        onValueChange = {newTodoDescription = it},
+                        onValueChange = { newTodoDescription = it },
                         label = { Text("Description") },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -81,16 +79,14 @@ fun AddTodoBottomSheet(
                         // 添加按钮
                         Button(modifier = Modifier
                             .weight(1f)
-                            .padding(end = 8.dp),
-                            onClick = {
-                                viewModel.insertTodo(
-                                    TodoItem(
-                                        title = newTodoTitle,
-                                        description = newTodoDescription
-                                    )
+                            .padding(end = 8.dp), onClick = {
+                            viewModel.insertTodo(
+                                TodoItem(
+                                    title = newTodoTitle, description = newTodoDescription
                                 )
-                                onDismiss()
-                            }) {
+                            )
+                            onDismiss()
+                        }) {
                             Text("Add")
                         }
 

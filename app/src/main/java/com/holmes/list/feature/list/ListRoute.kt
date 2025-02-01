@@ -55,20 +55,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.holmes.list.component.AddTodoBottomSheet
-import com.holmes.list.data.TestItems.TodoItems
-import com.holmes.list.data.TestItemsProvider
 import com.holmes.list.data.database.TodoDatabase
-import com.holmes.list.data.model.TodoItem
 import com.holmes.list.data.viewmodel.TodoViewModel
 import com.holmes.list.feature.list.component.ItemTodo
-import com.holmes.list.ui.theme.ListTheme
 import com.holmes.list.ui.theme.ShapeExtraLarge
 import kotlinx.coroutines.launch
 
@@ -78,8 +72,6 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ListRoute(
-    //测试数据
-    toDoItems: List<TodoItem> = TodoItems,
 
 ) {
     val context = LocalContext.current
@@ -92,7 +84,8 @@ fun ListRoute(
     })
 
     ListScreen( //toDoItems = toDoItems,
-        viewModel = listViewModel)
+        viewModel = listViewModel
+    )
 }
 
 /**
@@ -101,8 +94,7 @@ fun ListRoute(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ListScreen(
-    toggleDrawer: () -> Unit = {},
-    toSearch: () -> Unit = {},
+    toggleDrawer: () -> Unit = {}, toSearch: () -> Unit = {},
     //toDoItems: List<TodoItem> = listOf(),
     viewModel: TodoViewModel
 ) {
@@ -201,18 +193,15 @@ fun ListScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("No items available", style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    "No items available",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     } else {
-                        items(
-                            toDoItems,
-                            key = { it.id }
-                        ) {item ->
-                            ItemTodo(
-                                data = item,
-                                onLongClick = { viewModel.deleteById(item.id) }
-                            )
+                        items(toDoItems, key = { it.id }) { item ->
+                            ItemTodo(data = item, onLongClick = { viewModel.deleteById(item.id) })
                         }
                     }
                 }
@@ -220,7 +209,8 @@ fun ListScreen(
 
             // 添加待办事项底部弹窗
             if (showBottomSheet) {
-                AddTodoBottomSheet(showBottomSheet = showBottomSheet,
+                AddTodoBottomSheet(
+                    showBottomSheet = showBottomSheet,
                     onDismiss = { showBottomSheet = false },
                     viewModel = viewModel
                 )
