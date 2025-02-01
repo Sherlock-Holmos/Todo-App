@@ -28,4 +28,10 @@ class TodoViewModel(private val todoDao: TodoDao) : ViewModel() {
             todoDao.update(todo)
         }
     }
+
+    fun deleteById(id: Int) {
+        viewModelScope.launch {
+            todoDao.deleteById(id)
+        }
+    }
 }

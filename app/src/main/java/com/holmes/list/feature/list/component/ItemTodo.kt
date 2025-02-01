@@ -3,6 +3,7 @@ package com.holmes.list.feature.list.component
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.holmes.list.data.TestItems.sTODO
@@ -42,44 +46,53 @@ import com.holmes.list.util.SuperDateUtil.formatLocalDateTimeMonthDay
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ItemTodo(data: TodoItem, modifier: Modifier = Modifier) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(ShapeLarge)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .height(70.dp)
+fun ItemTodo(data: TodoItem,
+             onLongClick: () -> Unit,
+             modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = Modifier
+            .pointerInput(Unit) { detectTapGestures(onLongPress = { onLongClick() }) },
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = Space3XLarge)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier
+                .fillMaxWidth()
+                .clip(ShapeLarge)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .height(70.dp)
         ) {
-            Text(
-                text = data.title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            SpaceExtraSmall3Height()
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = Space3XLarge)
+            ) {
+                Text(
+                    text = data.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                SpaceExtraSmall3Height()
 
-            val formattedDeadline = formatLocalDateTimeMonthDay(data.deadline)
-            Text(
-                text = formattedDeadline,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
+                val formattedDeadline = formatLocalDateTimeMonthDay(data.deadline)
+                Text(
+                    text = formattedDeadline,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+
+            var checked by remember { mutableStateOf(data.isCompleted) }
+            Checkbox(
+                checked = checked,
+                onCheckedChange = { checked = it },
+                modifier = Modifier
+                    .padding(horizontal = Space3XLarge)
+                    .padding(vertical = SpaceSmall)
+                    .size(32.dp)
             )
         }
-
-        var checked by remember { mutableStateOf(data.isCompleted) }
-        Checkbox(
-            checked = checked,
-            onCheckedChange = { checked = it },
-            modifier = Modifier
-                .padding(horizontal = Space3XLarge)
-                .padding(vertical = SpaceSmall)
-                .size(32.dp)
-        )
     }
 }
 
@@ -90,7 +103,8 @@ fun ItemTodo(data: TodoItem, modifier: Modifier = Modifier) {
 fun ItemTodoPreview() {
     ListTheme {
         ItemTodo(
-            data = sTODO
+            data = sTODO,
+            onLongClick = { },
         )
     }
 }

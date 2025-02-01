@@ -205,8 +205,14 @@ fun ListScreen(
                             }
                         }
                     } else {
-                        items(toDoItems) {
-                            ItemTodo(data = it)
+                        items(
+                            toDoItems,
+                            key = { it.id }
+                        ) {item ->
+                            ItemTodo(
+                                data = item,
+                                onLongClick = { viewModel.deleteById(item.id) }
+                            )
                         }
                     }
                 }

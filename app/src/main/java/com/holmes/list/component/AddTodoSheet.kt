@@ -72,6 +72,8 @@ fun AddTodoBottomSheet(
                         label = { Text("Description") },
                         modifier = Modifier.fillMaxWidth()
                     )
+
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
@@ -87,6 +89,7 @@ fun AddTodoBottomSheet(
                                         description = newTodoDescription
                                     )
                                 )
+                                onDismiss()
                             }) {
                             Text("Add")
                         }
