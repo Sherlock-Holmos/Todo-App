@@ -26,5 +26,5 @@ data class TodoItem(
     /**
      * 待办的截止时间
      */
-    val deadline: LocalDateTime? = null // 新增的字段
+    val deadline: LocalDateTime? = null
 )

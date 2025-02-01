@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Todo</string>
-    <string name="app_slogan">一切皆有可能</string>
+    <string name="app_slogan">Everything is possible</string>
     <string name="copyright">Copyright © %1$d Ixuea. All Rights Reserved</string>
-    <string name="tab_list_name">清单</string>
-    <string name="tab_week_name">周刊</string>
-    <string name="tab_habit_name">习惯</string>
-    <string name="tab_mine_name">我的</string>
-    <string name="author">户缘</string>
+    <string name="tab_list_name">List</string>
+    <string name="tab_week_name">Week</string>
+    <string name="tab_habit_name">Habit</string>
+    <string name="tab_mine_name">Mine</string>
+    <string name="author">JokerSh</string>
 </resources>

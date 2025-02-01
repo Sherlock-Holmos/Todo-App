@@ -1,5 +1,6 @@
 package com.holmes.list.feature.list
 
+import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -53,13 +54,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.holmes.list.component.AddTodoBottomSheet
 import com.holmes.list.data.TestItems.TodoItems
 import com.holmes.list.data.TestItemsProvider
+import com.holmes.list.data.database.TodoDatabase
 import com.holmes.list.data.model.TodoItem
+import com.holmes.list.data.viewmodel.TodoViewModel
 import com.holmes.list.feature.list.component.ItemTodo
 import com.holmes.list.ui.theme.ListTheme
 import com.holmes.list.ui.theme.ShapeExtraLarge
@@ -74,13 +81,18 @@ fun ListRoute(
     //测试数据
     toDoItems: List<TodoItem> = TodoItems,
 
-    //listViewModel: ListViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    //val todos by listViewModel.todos.collectAsState()
+    val context = LocalContext.current
+    val application = context.applicationContext as Application
+    val listViewModel: TodoViewModel = viewModel(factory = object : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val todoDao = TodoDatabase.getDatabase(application).todoDao()
+            return TodoViewModel(todoDao) as T
+        }
+    })
 
-    ListScreen(
-        toDoItems = toDoItems
-    )
+    ListScreen( //toDoItems = toDoItems,
+        viewModel = listViewModel)
 }
 
 /**
@@ -91,17 +103,14 @@ fun ListRoute(
 fun ListScreen(
     toggleDrawer: () -> Unit = {},
     toSearch: () -> Unit = {},
-    toDoItems: List<TodoItem> = listOf(),
+    //toDoItems: List<TodoItem> = listOf(),
+    viewModel: TodoViewModel
 ) {
-    /**
-     * 是否显示底部弹窗
-     */
-    var showBottomSheet by remember { mutableStateOf(false) }
+    val toDoItems by viewModel.allTodos.collectAsState(initial = emptyList()) //待办事项列表
 
-    /**
-     * 侧拉抽屉状态
-     */
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    var showBottomSheet by remember { mutableStateOf(false) } //是否显示底部弹窗
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) //侧拉抽屉状态
 
     /**
      * 侧拉抽屉协程
@@ -186,8 +195,19 @@ fun ListScreen(
                     verticalArrangement = Arrangement.spacedBy(5.dp),
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    items(toDoItems) {
-                        ItemTodo(data = it)
+                    if (toDoItems.isEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("No items available", style = MaterialTheme.typography.bodyMedium)
+                            }
+                        }
+                    } else {
+                        items(toDoItems) {
+                            ItemTodo(data = it)
+                        }
                     }
                 }
             }
@@ -195,7 +215,9 @@ fun ListScreen(
             // 添加待办事项底部弹窗
             if (showBottomSheet) {
                 AddTodoBottomSheet(showBottomSheet = showBottomSheet,
-                    onDismiss = { showBottomSheet = false })
+                    onDismiss = { showBottomSheet = false },
+                    viewModel = viewModel
+                )
             }
         }
     }
@@ -246,7 +268,7 @@ fun ListTopBar(
                 modifier = Modifier.size(18.dp)
             )
             Text(
-                text = "查询待办信息",
+                text = "Search for Todo",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -276,20 +298,4 @@ fun ListTopBar(
             })
         }
     })
-}
-
-/**
- * 清单页预览函数
- */
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true, widthDp = 330, heightDp = 500)
-@Composable
-private fun ListScreenPreview(
-    @PreviewParameter(TestItemsProvider::class) toDoItems: List<TodoItem>
-): Unit {
-    ListTheme {
-        ListScreen(
-            toDoItems = toDoItems
-        )
-    }
 }

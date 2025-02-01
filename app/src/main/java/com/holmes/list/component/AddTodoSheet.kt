@@ -14,11 +14,17 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.holmes.list.data.model.TodoItem
+import com.holmes.list.data.viewmodel.TodoViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -27,8 +33,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTodoBottomSheet(
-    showBottomSheet: Boolean, onDismiss: () -> Unit
+    showBottomSheet: Boolean, onDismiss: () -> Unit,
+    viewModel: TodoViewModel
 ) {
+    //待办类信息
+    var newTodoTitle by remember { mutableStateOf("") }
+    var newTodoDescription by remember { mutableStateOf("") }
+    var newTodoDeadline by remember { mutableStateOf("") }
+
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
@@ -44,17 +56,19 @@ fun AddTodoBottomSheet(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "添加待办事项",
+                        text = "Add Todo",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
-                    OutlinedTextField(value = "",
-                        onValueChange = {},
+                    // 待办标题输入框
+                    OutlinedTextField(value = newTodoTitle,
+                        onValueChange = {newTodoTitle = it},
                         label = { Text("Title") },
                         modifier = Modifier.fillMaxWidth()
                     )
-                    OutlinedTextField(value = "",
-                        onValueChange = {},
+                    // 待办描述输入框
+                    OutlinedTextField(value = newTodoDescription,
+                        onValueChange = {newTodoDescription = it},
                         label = { Text("Description") },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -62,11 +76,22 @@ fun AddTodoBottomSheet(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        // 添加按钮
                         Button(modifier = Modifier
                             .weight(1f)
-                            .padding(end = 8.dp), onClick = {}) {
+                            .padding(end = 8.dp),
+                            onClick = {
+                                viewModel.insertTodo(
+                                    TodoItem(
+                                        title = newTodoTitle,
+                                        description = newTodoDescription
+                                    )
+                                )
+                            }) {
                             Text("Add")
                         }
+
+                        // 取消按钮
                         Button(modifier = Modifier
                             .weight(1f)
                             .padding(start = 8.dp), onClick = {
@@ -83,10 +108,4 @@ fun AddTodoBottomSheet(
             }
         }
     }
-}
-
-@Preview(showBackground = true, widthDp = 320, heightDp = 480)
-@Composable
-private fun AddTodoBottomSheetPreview() {
-    AddTodoBottomSheet(showBottomSheet = true, onDismiss = {})
 }

@@ -2,32 +2,30 @@ package com.holmes.list.data.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.holmes.list.data.dao.TodoDao
 import com.holmes.list.data.model.TodoItem
 import com.holmes.list.data.repository.TodoRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
+class TodoViewModel(private val todoDao: TodoDao) : ViewModel() {
+    //待办列表
+    val allTodos: Flow<List<TodoItem>> = todoDao.getAllTodos()
 
-    // StateFlow 绑定到 UI
     private val _todos = MutableStateFlow<List<TodoItem>>(emptyList())
     val todos: StateFlow<List<TodoItem>> = _todos
 
-    init {
-        // 收集 Room 数据库中的数据
+    fun insertTodo(todo: TodoItem) {
         viewModelScope.launch {
-            repository.allTodos.collect { todoList ->
-                _todos.value = todoList
-            }
+            todoDao.insert(todo)
         }
     }
 
-    // 处理用户交互的方法
-    fun addTodo(todo: TodoItem) {
+    fun update(todo: TodoItem) {
         viewModelScope.launch {
-            repository.insert(todo)
+            todoDao.update(todo)
         }
     }
-
 }

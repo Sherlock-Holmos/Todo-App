@@ -61,7 +61,7 @@ fun SplashScreen(
 
         //Splash倒计时
         Text(
-            text = "倒计时：$timeLeft",
+            text = "$timeLeft s",
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier
