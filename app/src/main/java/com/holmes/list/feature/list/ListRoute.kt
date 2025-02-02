@@ -59,13 +59,7 @@ import kotlinx.coroutines.launch
 fun ListRoute() {
     val context = LocalContext.current
     val application = context.applicationContext as Application
-    val listViewModel: TodoViewModel = viewModel(factory = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val todoDao = TodoDatabase.getDatabase(application).todoDao()
-            return TodoViewModel(todoDao) as T
-        }
-    })
-
+    val listViewModel: ListViewModel = viewModel()
     ListScreen(viewModel = listViewModel)
 }
 
@@ -75,7 +69,7 @@ fun ListRoute() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ListScreen(
-    viewModel: TodoViewModel
+    viewModel: ListViewModel
 ) {
     val toDoItems by viewModel.allTodos.collectAsState(initial = emptyList()) //待办事项列表
     var showBottomSheet by remember { mutableStateOf(false) } //是否显示底部弹窗
@@ -174,8 +168,7 @@ fun ListScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    "No To-Do Items",
-                                    style = MaterialTheme.typography.bodyMedium
+                                    "No To-Do Items", style = MaterialTheme.typography.bodyMedium
                                 )
                             }
                         }

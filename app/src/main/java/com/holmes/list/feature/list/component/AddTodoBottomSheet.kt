@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.holmes.list.data.model.TodoItem
 import com.holmes.list.data.viewmodel.TodoViewModel
+import com.holmes.list.feature.list.ListViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -32,7 +33,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTodoBottomSheet(
-    showBottomSheet: Boolean, onDismiss: () -> Unit, viewModel: TodoViewModel
+    showBottomSheet: Boolean, onDismiss: () -> Unit, viewModel: ListViewModel
 ) {
     //待办类信息
     var newTodoTitle by remember { mutableStateOf("") }
