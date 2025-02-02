@@ -73,7 +73,7 @@ fun ListScreen(
     val scope = rememberCoroutineScope()
 
     /**
-     * 侧拉抽屉协程
+     * 侧拉抽屉
      */
     ModalNavigationDrawer(
         drawerContent = {
@@ -91,6 +91,7 @@ fun ListScreen(
                     )
                     HorizontalDivider()
 
+                    // 工具和资源
                     Text(
                         "Tools And Resources",
                         modifier = Modifier.padding(16.dp),
@@ -105,6 +106,7 @@ fun ListScreen(
 
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
+                    // 设置和帮助
                     Text(
                         "Settings And Help",
                         modifier = Modifier.padding(16.dp),
@@ -152,6 +154,7 @@ fun ListScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
+                // 待办事项列表
                 LazyColumn(
                     contentPadding = PaddingValues(horizontal = 25.dp),
                     verticalArrangement = Arrangement.spacedBy(5.dp),
@@ -170,7 +173,8 @@ fun ListScreen(
                         }
                     } else {
                         items(toDoItems, key = { it.id }) { item ->
-                            ItemTodo(data = item, onLongClick = { viewModel.deleteById(item.id) })
+                            ItemTodo(data = item, onLongClick = { viewModel.deleteById(item.id) },
+                                onUpdateCompletionStatus = { viewModel.updateTodoItemCompletionStatus(item.id) })
                         }
                     }
                 }

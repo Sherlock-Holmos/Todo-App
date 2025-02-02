@@ -44,4 +44,13 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             repository.deleteById(id)
         }
     }
+
+    /**
+     * 修改待办事项的完成状态
+     */
+    fun updateTodoItemCompletionStatus(id: Int) {
+        viewModelScope.launch {
+            repository.updateTodoItemCompletionStatus(id)
+        }
+    }
 }

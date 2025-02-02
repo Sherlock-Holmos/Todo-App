@@ -2,7 +2,8 @@ package com.holmes.list.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDateTime
+import java.time.LocalDate
+import java.time.LocalTime
 
 @Entity(tableName = "todo_items")
 data class TodoItem(
@@ -14,5 +15,7 @@ data class TodoItem(
 
     val isCompleted: Boolean = false, // 待办是否完成
 
-    val deadline: LocalDateTime? = null // 待办的截止时间
+    val date: LocalDate? = null, // 待办的日期
+
+    val time: LocalTime? = null // 待办的时间
 )

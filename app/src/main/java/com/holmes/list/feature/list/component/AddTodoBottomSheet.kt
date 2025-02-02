@@ -42,10 +42,12 @@ fun AddTodoBottomSheet(
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
+    //显示底部弹窗
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = onDismiss, sheetState = sheetState
         ) {
+            //弹窗内容
             Box {
                 Column(
                     modifier = Modifier
@@ -71,7 +73,7 @@ fun AddTodoBottomSheet(
                         modifier = Modifier.fillMaxWidth()
                     )
 
-
+                    // 按钮区域
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()

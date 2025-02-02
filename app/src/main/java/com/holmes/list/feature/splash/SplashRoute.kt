@@ -1,7 +1,6 @@
 package com.holmes.list.feature.splash
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.holmes.list.R
+import com.holmes.list.extension.clickableNoRipple
 import com.holmes.list.ui.theme.ListTheme
 import com.holmes.list.util.SuperDateUtil
 
@@ -78,17 +78,17 @@ fun SplashScreen(
                 .statusBarsPadding()
                 .padding(120.dp)
                 .align(Alignment.TopCenter)
-                .clickable {
+                .clickableNoRipple {
                     toMain()
                 })
 
-        Text(text = "by\n"+stringResource(id = R.string.author),
+        Text(text = "by\n" + stringResource(id = R.string.author),
             color = MaterialTheme.colorScheme.background,
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier
                 .statusBarsPadding()
                 .align(Alignment.Center)
-                .clickable {
+                .clickableNoRipple {
                     toMain()
                 })
 

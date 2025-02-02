@@ -23,4 +23,7 @@ interface TodoDao {
 
     @Query("DELETE FROM todo_items WHERE id = :id")
     suspend fun deleteById(id: Int)  // 根据 ID 删除数据
+
+    @Query("UPDATE todo_items SET isCompleted = NOT isCompleted WHERE id = :id")
+    suspend fun updateTodoItemCompletionStatus(id: Int)  // 根据 ID 修改是否完成
 }

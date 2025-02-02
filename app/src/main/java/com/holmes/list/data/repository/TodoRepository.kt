@@ -18,4 +18,9 @@ class TodoRepository(private val todoDao: TodoDao) {
     suspend fun deleteById(id: Int) {
         todoDao.deleteById(id)
     }
+
+    //修改是否完成
+    suspend fun updateTodoItemCompletionStatus(id: Int) {
+        todoDao.updateTodoItemCompletionStatus(id)
+    }
 }

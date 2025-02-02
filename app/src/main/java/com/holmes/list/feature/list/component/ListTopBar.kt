@@ -1,7 +1,6 @@
 package com.holmes.list.feature.list.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.holmes.list.extension.clickableNoRipple
 import com.holmes.list.ui.theme.ShapeExtraLarge
 
 /**
@@ -61,7 +61,7 @@ fun ListTopBar(
                 .height(38.dp)
                 .clip(ShapeExtraLarge)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                .clickable { toSearch() }) {
+                .clickableNoRipple { toSearch() }) {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = null,
