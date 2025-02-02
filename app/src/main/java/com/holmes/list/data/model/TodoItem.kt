@@ -8,23 +8,11 @@ import java.time.LocalDateTime
 data class TodoItem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
 
-    /**
-     * 待办的标题
-     */
-    val title: String,
+    val title: String, // 待办的标题
 
-    /**
-     * 待办的详情
-     */
-    val description: String?,
+    val description: String?, // 待办的详情
 
-    /**
-     * 待办是否完成
-     */
-    val isCompleted: Boolean = false,
+    val isCompleted: Boolean = false, // 待办是否完成
 
-    /**
-     * 待办的截止时间
-     */
-    val deadline: LocalDateTime? = null
+    val deadline: LocalDateTime? = null // 待办的截止时间
 )

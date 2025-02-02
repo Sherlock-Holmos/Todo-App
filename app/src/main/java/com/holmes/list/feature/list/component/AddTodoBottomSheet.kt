@@ -1,4 +1,4 @@
-package com.holmes.list.component
+package com.holmes.list.feature.list.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

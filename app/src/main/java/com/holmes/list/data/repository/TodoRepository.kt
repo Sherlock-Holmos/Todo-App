@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 class TodoRepository(private val todoDao: TodoDao) {
 
+    //获取所有数据
     val allTodos: Flow<List<TodoItem>> = todoDao.getAllTodos()
 
     //插入数据
@@ -14,7 +15,7 @@ class TodoRepository(private val todoDao: TodoDao) {
     }
 
     //删除数据
-    suspend fun update(todo: TodoItem) {
-        todoDao.update(todo)
+    suspend fun deleteById(id: Int) {
+        todoDao.deleteById(id)
     }
 }

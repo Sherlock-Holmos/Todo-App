@@ -16,18 +16,27 @@ class TodoViewModel(private val todoDao: TodoDao) : ViewModel() {
     private val _todos = MutableStateFlow<List<TodoItem>>(emptyList())
     val todos: StateFlow<List<TodoItem>> = _todos
 
+    /**
+     * 插入待办事项
+     */
     fun insertTodo(todo: TodoItem) {
         viewModelScope.launch {
             todoDao.insert(todo)
         }
     }
 
+    /**
+     * 更新待办事项
+     */
     fun update(todo: TodoItem) {
         viewModelScope.launch {
             todoDao.update(todo)
         }
     }
 
+    /**
+     * 删除待办事项
+     */
     fun deleteById(id: Int) {
         viewModelScope.launch {
             todoDao.deleteById(id)

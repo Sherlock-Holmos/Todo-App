@@ -24,11 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.holmes.list.data.TestItems.sTODO
 import com.holmes.list.data.model.TodoItem
-import com.holmes.list.ui.theme.ListTheme
 import com.holmes.list.ui.theme.ShapeLarge
 import com.holmes.list.ui.theme.Space3XLarge
 import com.holmes.list.ui.theme.SpaceExtraSmall3Height
@@ -85,18 +82,5 @@ fun ItemTodo(
                     .size(32.dp)
             )
         }
-    }
-}
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true, widthDp = 330)
-@Composable
-fun ItemTodoPreview() {
-    ListTheme {
-        ItemTodo(
-            data = sTODO,
-            onLongClick = { },
-        )
     }
 }
