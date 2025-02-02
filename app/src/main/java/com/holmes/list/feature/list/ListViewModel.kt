@@ -1,9 +1,13 @@
 package com.holmes.list.feature.list
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.holmes.list.data.database.TodoDatabase
 import com.holmes.list.data.model.TodoItem
 import com.holmes.list.data.repository.TodoRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -11,25 +15,33 @@ import kotlinx.coroutines.launch
 /**
  * 待办页面的ViewModel
  */
-class ListViewModel(private val repository: TodoRepository) : ViewModel() {
+class ListViewModel(application: Application) : AndroidViewModel(application) {
 
-    // StateFlow 绑定到 UI
-    private val _todos = MutableStateFlow<List<TodoItem>>(emptyList())
-    val todos: StateFlow<List<TodoItem>> = _todos
+    private val repository: TodoRepository
+
+    //待办列表
+    val allTodos: Flow<List<TodoItem>> get() = repository.allTodos
 
     init {
-        // 收集 Room 数据库中的数据
+        val todoDao = TodoDatabase.getDatabase(application).todoDao()
+        repository = TodoRepository(todoDao)
+    }
+
+    /**
+     * 插入待办事项
+     */
+    fun insertTodo(todo: TodoItem) {
         viewModelScope.launch {
-            repository.allTodos.collect { todoList ->
-                _todos.value = todoList
-            }
+            repository.insert(todo)
         }
     }
 
-    // 处理用户交互的方法
-    fun addTodo(todo: TodoItem) {
+    /**
+     * 删除待办事项
+     */
+    fun deleteById(id: Int) {
         viewModelScope.launch {
-            repository.insert(todo)
+            repository.deleteById(id)
         }
     }
 }
