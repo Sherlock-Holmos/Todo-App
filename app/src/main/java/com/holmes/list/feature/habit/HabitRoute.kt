@@ -1,8 +1,16 @@
 package com.holmes.list.feature.habit
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.holmes.list.feature.habit.component.HabitTitleBar
+import com.holmes.list.feature.week.component.WeekListContainer
+import com.holmes.list.feature.week.component.WeekTitleBar
 import com.holmes.list.ui.theme.ListTheme
 
 /**
@@ -18,7 +26,18 @@ fun HabitRoute() {
  */
 @Composable
 fun HabitScreen() {
-    Text(text = "习惯页")
+    Scaffold(
+        topBar = {
+            HabitTitleBar()
+        }
+    ) {paddingValues ->
+        Box(modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize()
+        ) {
+
+        }
+    }
 }
 
 /**
