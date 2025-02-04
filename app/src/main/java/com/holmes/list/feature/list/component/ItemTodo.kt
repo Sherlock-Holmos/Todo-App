@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.holmes.list.data.model.TodoItem
 import com.holmes.list.ui.theme.ShapeLarge
@@ -63,17 +64,37 @@ fun ItemTodo(
                     text = data.title,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 SpaceExtraSmall3Height()
 
-                // 截止日期
-                val formattedDeadline = formatLocalDateTimeYearMonthDay(data.date)
-                Text(
-                    text = formattedDeadline,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+                // 计算 deadline 字符串
+                val deadline = if (data.date == null && data.time == null) {
+                    "no deadline"
+                } else {
+                    buildString {
+                        if (data.date != null) append(data.date.toString())
+                        if (data.date != null && data.time != null) append(" ")
+                        if (data.time != null) append(data.time.toString())
+                    }
+                }
+
+                // 如果 deadline 不是 "no deadline"（即至少有一个日期或时间不是 null），则显示它
+                if (deadline != "no deadline") {
+                    Text(
+                        text = deadline,
+                        modifier = Modifier, // 可以根据需要添加修饰符
+                        color = MaterialTheme.colorScheme.onSurface, // 文本颜色
+                        style = MaterialTheme.typography.bodyMedium, // 文本样式
+                    )
+                }
+                 else {
+                     Text(
+                         text = "no deadline",
+                     )
+                 }
             }
 
             // 待办事项完成状态
