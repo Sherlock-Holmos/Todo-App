@@ -1,6 +1,5 @@
 package com.holmes.list.feature.list
 
-import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +38,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.holmes.list.feature.list.component.AddTodoBottomSheet
@@ -53,8 +51,6 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ListRoute() {
-    val context = LocalContext.current
-    val application = context.applicationContext as Application
     val listViewModel: ListViewModel = viewModel()
     ListScreen(viewModel = listViewModel)
 }
@@ -156,8 +152,8 @@ fun ListScreen(
             ) {
                 // 待办事项列表
                 LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 25.dp),
-                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    contentPadding = PaddingValues(horizontal = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     if (toDoItems.isEmpty()) {

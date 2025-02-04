@@ -42,7 +42,6 @@ fun ListTopBar(
     onSortByTime: () -> Unit,
     onSortByImportance: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     var expanded by remember { mutableStateOf(false) } // 控制下拉菜单状态
 
     CenterAlignedTopAppBar(navigationIcon = {

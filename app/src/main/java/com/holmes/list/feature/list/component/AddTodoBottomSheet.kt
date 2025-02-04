@@ -1,5 +1,7 @@
 package com.holmes.list.feature.list.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -15,9 +17,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -35,28 +39,37 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.holmes.list.component.DatePickerModal
+import com.holmes.list.component.TimePickerModel
 import com.holmes.list.data.model.TodoItem
 import com.holmes.list.feature.list.ListViewModel
 import com.holmes.list.util.SuperDateUtil.timestampToLocalDate
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalTime
 
 /**
  * 底部弹窗内容，用于添加待办信息
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTodoBottomSheet(
     showBottomSheet: Boolean, onDismiss: () -> Unit, viewModel: ListViewModel
 ) {
-    //待办类信息
+    //待办标题
     var newTodoTitle by remember { mutableStateOf("") }
+    // 待办描述信息
     var newTodoDescription by remember { mutableStateOf("") }
+    // 保存选择的日期
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+    // 保存选择的时间
+    var selectedTime by remember { mutableStateOf<LocalTime?>(null) }
 
     var showModal by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    // 控制时间选择器是否显示
+    var showTimePicker by remember { mutableStateOf(false) }
 
     //显示底部弹窗
     if (showBottomSheet) {
@@ -71,10 +84,11 @@ fun AddTodoBottomSheet(
             Box {
                 Column(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(horizontal = 16.dp)
+                        .padding(vertical = 0.dp)
                         .fillMaxWidth()
                         .imePadding(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    //verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
                         text = "Add Todo",
@@ -106,33 +120,54 @@ fun AddTodoBottomSheet(
                             .imePadding(),
                     )
 
-                    // 待办日期输入框
-                    OutlinedTextField(value = selectedDate?.toString() ?: "",
-                        onValueChange = { },
-                        label = { Text("Deadline") },
-                        placeholder = { Text("MM/DD/YYYY") },
-                        trailingIcon = {
-                            Icon(Icons.Default.DateRange, contentDescription = "Deadline")
-                        },
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .imePadding()
-                            .pointerInput(selectedDate) {
-                                awaitEachGesture {
-                                    awaitFirstDown(pass = PointerEventPass.Initial)
-                                    val upEvent =
-                                        waitForUpOrCancellation(pass = PointerEventPass.Initial)
-                                    if (upEvent != null) {
-                                        showModal = true
-                                    }
-                                }
-                            })
+                    ) {
+                        // 待办日期点击按钮
+                        IconButton(
+                            onClick = {
+                                showModal = true
+                            }, modifier = Modifier.weight(1f)
+                        ) {
+                            Row {
+                                Icon(Icons.Default.DateRange, contentDescription = "Deadline")
+                                Text(text = selectedDate?.toString() ?: "")
+                            }
+                        }
+                        // 待办时间点击按钮
+                        IconButton(
+                            onClick = {
+                                showTimePicker = true
+                            }, modifier = Modifier.weight(1f)
+                        ) {
+                            Row {
+                                Icon(
+                                    imageVector = Icons.Default.Notifications,
+                                    contentDescription = null
+                                )
+                                Text(text = selectedTime?.toString() ?: "")
+                            }
+                        }
+                    }
 
                     if (showModal) {
-                        DatePickerModal(
-                            onDateSelected = { selectedDate = timestampToLocalDate(it) },
-                            onDismiss = { showModal = false }
-                        )
+                        DatePickerModal(onDateSelected = {
+                            selectedDate = timestampToLocalDate(it)
+                        }, onDismiss = { showModal = false })
+                    }
+
+                    // 时间选择器对话框
+                    if (showTimePicker) {
+                        TimePickerModel(onConfirm = { timePickerState ->
+                            // 将选择的时间转换为 LocalTime
+                            val time = LocalTime.of(timePickerState.hour, timePickerState.minute)
+                            selectedTime = time
+                            showTimePicker = false // 关闭时间选择器
+                        }, onDismiss = {
+                            showTimePicker = false // 关闭时间选择器
+                        })
                     }
 
                     // 按钮区域
@@ -146,7 +181,10 @@ fun AddTodoBottomSheet(
                             .padding(end = 8.dp), onClick = {
                             viewModel.insertTodo(
                                 TodoItem(
-                                    title = newTodoTitle, description = newTodoDescription, date = selectedDate
+                                    title = newTodoTitle,
+                                    description = newTodoDescription,
+                                    date = selectedDate,
+                                    time = selectedTime
                                 )
                             )
                             onDismiss()

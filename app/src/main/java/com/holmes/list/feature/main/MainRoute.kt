@@ -36,17 +36,17 @@ fun MainScreen() {
     var currentDestination by rememberSaveable {
         mutableStateOf(TopLevelDestination.LIST.route)
     }
-
-    val pagerState = rememberPagerState { 4 }
-
+    //创建一个分页状态
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { 4 })
+    //创建一个协程作用域
     val scope = rememberCoroutineScope()
-
+    //主界面
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         HorizontalPager(
             state = pagerState, userScrollEnabled = false, //允许用户进行页面滑动
-            modifier = Modifier
+            beyondViewportPageCount = 3, modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
         ) { page ->
@@ -57,7 +57,7 @@ fun MainScreen() {
                 3 -> MineRoute()
             }
         }
-
+        //底部导航栏
         MyNavigationBar(
             destinations = TopLevelDestination.entries,
             currentDestination = currentDestination,

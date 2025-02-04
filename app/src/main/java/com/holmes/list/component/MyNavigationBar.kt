@@ -29,7 +29,7 @@ fun MyNavigationBar(
     currentDestination: String,
     onNavigationToDestination: (Int) -> Unit,
     modifier: Modifier = Modifier,
-): Unit {
+) {
     HorizontalDivider()
     Row(
         modifier = modifier
@@ -46,7 +46,7 @@ fun MyNavigationBar(
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .weight(1f)
-                    .clickableNoRipple() {
+                    .clickableNoRipple {
                         onNavigationToDestination(index)
                     }) {
                 Image(

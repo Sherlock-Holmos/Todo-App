@@ -1,5 +1,7 @@
 package com.holmes.list.feature.main
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -23,6 +25,7 @@ fun NavController.navigateToMain(): Unit {
 /**
  * 配置导航
  */
+@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.mainScreen() {
     composable(MAIN_ROUTE) {
         MainRoute()

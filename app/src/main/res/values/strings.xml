@@ -7,4 +7,7 @@
     <string name="tab_habit_name">Habit</string>
     <string name="tab_mine_name">Mine</string>
     <string name="author">JokerSh</string>
+    <string name="settings_title">Setting</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_description">dark mode</string>
 </resources>
