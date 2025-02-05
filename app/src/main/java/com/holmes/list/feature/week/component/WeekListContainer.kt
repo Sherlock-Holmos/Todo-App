@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,16 +47,24 @@ fun WeekListContainer() {
         DayHourColumn(verticalScrollState)
         Column(modifier = Modifier.horizontalScroll(horizontalScrollState)) {
             WeekDaysRow()
-            Column(modifier = Modifier.verticalScroll(verticalScrollState)) {
-                for (i in 1..20) {
-                    Row {
-                        for (j in 1..10) {
-                            Box(modifier = Modifier.size(60.dp)) {
-                                Text("Cell $i,$j")
-                            }
-                        }
-                    }
-                }
+//            Column(modifier = Modifier.verticalScroll(verticalScrollState)) {
+//                for (i in 1..20) {
+//                    Row {
+//                        for (j in 1..10) {
+//                            Box(modifier = Modifier.size(60.dp)) {
+//                                Text("Cell $i,$j")
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Week Todo")
             }
         }
     }
@@ -64,14 +74,26 @@ fun WeekListContainer() {
 @Composable
 fun DayHourColumn(verticalScrollState: ScrollState) {
     val hourOfDay = (0..23).toList()
-    Column(modifier = Modifier.verticalScroll(verticalScrollState)) {
-        Box(modifier = Modifier.size(50.dp)) {}
-        for (hour in hourOfDay) {
-            Box(modifier = Modifier.size(50.dp)) {
-                Text("$hour", color = Color.Gray)
+    Column {
+        Box(modifier = Modifier.height(70.dp)) {}
+        Column(
+            modifier = Modifier.verticalScroll(verticalScrollState),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            for (hour in hourOfDay) {
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Text(
+                        "$hour", color = Color.Gray, modifier = Modifier.align(Alignment.Center)
+                    )
+                }
             }
         }
     }
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
