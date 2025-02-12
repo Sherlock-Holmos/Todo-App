@@ -1,10 +1,15 @@
 package com.holmes.list.feature.splash
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,59 +64,88 @@ fun SplashScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
     ) {
+        Column {
+            //Splash倒计时
 
-        //Splash倒计时
-        Text(
-            text = "$timeLeft s",
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier
-                .statusBarsPadding()
-                .align(Alignment.TopEnd)
-                .padding(10.dp)
-        )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(10.dp),
+                contentAlignment = Alignment.TopEnd
+            ) {
+                Text(
+                    text = "$timeLeft s",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.labelSmall,
+                )
+            }
 
-        //启动页应用名
-        Text(text = stringResource(id = R.string.app_name),
-            color = MaterialTheme.colorScheme.background,
-            style = MaterialTheme.typography.displayLarge,
-            modifier = Modifier
-                .statusBarsPadding()
-                .padding(120.dp)
-                .align(Alignment.TopCenter)
-                .clickableNoRipple {
-                    toMain()
-                })
+            //启动页应用名icon
+            Column(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(120.dp)
+                    .clickableNoRipple {
+                        toMain()
+                    }
+            ) {
+                Text(text = stringResource(id = R.string.app_name),
+                    color = MaterialTheme.colorScheme.background,
+                    style = MaterialTheme.typography.displayLarge
+                )
 
-        Text(text = "by\n" + stringResource(id = R.string.author),
-            color = MaterialTheme.colorScheme.background,
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier
-                .statusBarsPadding()
-                .align(Alignment.Center)
-                .clickableNoRipple {
-                    toMain()
-                })
+                Box(
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.mipmap.todo_icon),
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp)
+                    )
+                }
+            }
 
-        //启动页底部应用slogan
-        Text(
-            text = stringResource(id = R.string.app_slogan),
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier
-                .padding(bottom = 60.dp)
-                .align(Alignment.BottomCenter)
-        )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.primary),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(bottom = 30.dp)
+                ) {
+                    Text(text = "by\n" + stringResource(id = R.string.author),
+                        color = MaterialTheme.colorScheme.background,
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier
+                            .statusBarsPadding()
+                            .padding(bottom = 70.dp)
+                            .align(Alignment.CenterHorizontally)
+                    )
 
-        //版权文件
-        Text(
-            text = stringResource(id = R.string.copyright, year),
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier
-                .padding(bottom = 30.dp)
-                .align(Alignment.BottomCenter)
-        )
+                    // 启动页底部应用slogan
+                    Text(
+                        text = stringResource(id = R.string.app_slogan),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier
+                            .padding(bottom = 30.dp)
+                            .align(Alignment.CenterHorizontally)
+                    )
+
+                    // 版权文件
+                    Text(
+                        text = stringResource(id = R.string.copyright, year),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+        }
     }
 }
 
