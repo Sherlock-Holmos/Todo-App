@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,10 +29,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -51,9 +58,7 @@ fun MineRoute() {
  */
 @Composable
 fun MineScreen() {
-    Scaffold(topBar = {
-        MineTitleBar()
-    }) { paddingValues ->
+    Scaffold() { paddingValues ->
         Box(
             modifier = Modifier
                 .padding(paddingValues)
@@ -82,7 +87,7 @@ fun UserInfoDisplay() {
             imageVector = Icons.Filled.Person,
             contentDescription = "User Avatar",
             modifier = Modifier
-                .size(50.dp)
+                .size(90.dp)
                 .padding(end = 16.dp)
         )
 
@@ -103,32 +108,83 @@ fun UserInfoDisplay() {
 
 @Composable
 fun MenuList() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        shape = RoundedCornerShape(12.dp), // 圆角卡片
-        elevation = CardDefaults.cardElevation(4.dp) // 增加阴影
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            MenuItem(icon = Icons.Filled.CheckCircle, title = "我的勋章") {
-                // 这里可以添加点击逻辑，如跳转到“我的勋章”页面
+    Column {
+        // 第一行菜单
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(4.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly // 均匀分布
+            ) {
+                RowItem(icon = Icons.Filled.DateRange, title = "四象限") {
+                    // 点击跳转逻辑
+                }
+                RowItem(icon = Icons.Filled.Notifications, title = "番茄专注") {
+                    // 点击跳转逻辑
+                }
+                RowItem(icon = Icons.Filled.Create, title = "笔记") {
+                    // 点击跳转逻辑
+                }
+                RowItem(icon = Icons.Filled.ShoppingCart, title = "商城") {
+                    // 点击跳转逻辑
+                }
             }
-            Divider()
-            MenuItem(icon = Icons.Filled.Menu, title = "待办周报") {
-                // 这里可以添加点击逻辑，如跳转到“待办周报”页面
-            }
-            Divider()
-            MenuItem(icon = Icons.Filled.DateRange, title = "四象限") {
-                // 这里可以添加点击逻辑，如跳转到“四象限”页面
-            }
-            Divider()
-            MenuItem(icon = Icons.Filled.Notifications, title = "番茄专注") {
-                // 这里可以添加点击逻辑，如跳转到“番茄专注”页面
+        }
+
+        // 第二个卡片菜单
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(4.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                MenuItem(icon = Icons.Filled.CheckCircle, title = "我的勋章") { }
+                Divider()
+                MenuItem(icon = Icons.Filled.Menu, title = "待办周报") { }
+                Divider()
+                MenuItem(icon = Icons.Filled.Send, title = "导入与关联应用") { }
+                Divider()
+                MenuItem(icon = Icons.Filled.Info, title = "使用手册") { }
+                Divider()
+                MenuItem(icon = Icons.Filled.FavoriteBorder, title = "关注我") { }
             }
         }
     }
 }
+
+/**
+ * **横向菜单项**
+ */
+@Composable
+fun RowItem(icon: ImageVector, title: String, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(vertical = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally // 确保 Icon 和 Text 居中
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = title,
+            modifier = Modifier
+                .size(32.dp) // 调整图标大小
+                .align(Alignment.CenterHorizontally) // 确保图标居中
+        )
+        Spacer(modifier = Modifier.height(8.dp)) // 增加间距
+        Text(text = title, style = MaterialTheme.typography.bodyLarge)
+    }
+}
+
+
 
 /**
  * 单个菜单项
