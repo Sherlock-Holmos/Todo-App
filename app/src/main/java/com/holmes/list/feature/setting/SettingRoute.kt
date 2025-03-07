@@ -18,93 +18,53 @@ fun SettingRoute(): Unit {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen() {
-    // 状态变量
-    var isDarkModeEnabled by remember { mutableStateOf(false) }
-    var notificationPreference by remember { mutableStateOf("Always") }
-    var username by remember { mutableStateOf("") }
-
-    // 滚动状态
-    val scrollState = rememberScrollState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(scrollState)
-    ) {
-        // 标题
-        Text(
-            text = stringResource(id = R.string.settings_title),
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // 暗黑模式开关
-        SettingItem(
-            title = stringResource(id = R.string.dark_mode),
-            description = stringResource(id = R.string.dark_mode_description)
-        ) {
-            Switch(
-                checked = isDarkModeEnabled,
-                onCheckedChange = { isDarkModeEnabled = it }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.settings_title))
+                }
             )
         }
+    ){paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            Card {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    // 状态变量
+                    var isDarkModeEnabled by remember { mutableStateOf(false) }
+                    var notificationPreference by remember { mutableStateOf("Always") }
+                    var username by remember { mutableStateOf("") }
 
-//        // 通知偏好设置
-//        SettingItem(
-//            title = stringResource(id = R.string.notification_preference),
-//            description = stringResource(id = R.string.notification_preference_description)
-//        ) {
-//            val options = listOf("Always", "Only when open", "Never")
-//            var expanded by remember { mutableStateOf(false) }
-//
-//            Box {
-//                TextButton(onClick = { expanded = true }) {
-//                    Text(text = notificationPreference)
-//                }
-//                DropdownMenu(
-//                    expanded = expanded,
-//                    onDismissRequest = { expanded = false }
-//                ) {
-//                    options.forEach { option ->
-//                        DropdownMenuItem(
-//                            text = { Text(text = option) },
-//                            onClick = {
-//                                notificationPreference = option
-//                                expanded = false
-//                            }
-//                        )
-//                    }
-//                }
-//            }
-//        }
+                    // 滚动状态
+                    val scrollState = rememberScrollState()
 
-//        // 用户名输入
-//        SettingItem(
-//            title = stringResource(id = R.string.username),
-//            description = stringResource(id = R.string.username_description)
-//        ) {
-//            OutlinedTextField(
-//                value = username,
-//                onValueChange = { username = it },
-//                label = { Text(text = stringResource(id = R.string.enter_username)) },
-//                singleLine = true,
-//                modifier = Modifier.fillMaxWidth()
-//            )
-//        }
-//
-//        // 保存按钮
-//        Button(
-//            onClick = {
-//                // 处理保存逻辑
-//            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(top = 16.dp)
-//        ) {
-//            Text(text = stringResource(id = R.string.save_settings))
-//        }
+                    // 暗黑模式开关
+                    SettingItem(
+                        title = stringResource(id = R.string.dark_mode),
+                        description = stringResource(id = R.string.dark_mode_description)
+                    ) {
+                        Switch(
+                            checked = isDarkModeEnabled,
+                            onCheckedChange = { isDarkModeEnabled = it }
+                        )
+                    }
+                }
+            }
+        }
+
+
+
+
     }
+
 }
 
 @Composable
@@ -132,7 +92,7 @@ fun SettingItem(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true,widthDp = 320)
 @Composable
 fun PreviewSettingScreen() {
     SettingScreen()
